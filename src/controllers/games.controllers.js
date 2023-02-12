@@ -9,10 +9,22 @@ export async function create(req,res){
     }
 }
 export async function findAll(req,res){
+    const {name} = req.query;
     try{
-        const {rows} = await connectionDB.query("SELECT * FROM games");
-        res.send(rows);
+        const rowsGames = await connectionDB.query(`SELECT * FROM games WHERE name LIKE '${name}%'`);
+        if(rowsGames.rowCount === 0 && name===undefined){
+            const {rows} = await connectionDB.query("SELECT * FROM games");
+            res.send(rows);
+        } else if(rowsGames.rowCount === 0 && name!==undefined) {
+            res.send([]);
+        } else {
+            res.send(rowsGames.rows);
+        }
+
     }catch(err){
-        res.status(500).send(err.message);
+        return res.status(500).send(err.message);
     }
 }
+
+// SELECT * FROM Customers
+// WHERE CustomerName LIKE 'a%';

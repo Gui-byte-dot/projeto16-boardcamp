@@ -64,3 +64,16 @@ export async function findAll(req,res){
     }
     
 }
+
+export async function deleteRental(req,res){
+    const {id} = req.params;
+    const idRental = await connectionDB.query("SELECT * FROM rentals WHERE id=$1",[id]);
+    if(idRental.rowCount === 0){
+        return res.sendStatus(404)
+    } else {
+        await connectionDB.query("DELETE FROM rentals WHERE id=$1",[id]);
+        res.sendStatus(200);
+    }
+
+}
+
