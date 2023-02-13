@@ -9,9 +9,17 @@ export async function createCustomers(req,res){
     }
 }
 export async function findAllCustomers(req,res){
+    const {cpf} = req.query;
     try{
-        const {rows} = await connectionDB.query("SELECT * FROM customers");
-        res.send(rows);
+        const rowsCustomers = await connectionDB.query(`SELECT * FROM customers WHERE cpf LIKE '${cpf}%'`);
+        if(rowsCustomers.rowCount === 0 && cpf===undefined){
+            const {rows} = await connectionDB.query("SELECT * FROM customers");
+            res.send(rows);
+        } else if(rowsCustomers.rowCount === 0 && cpf!==undefined){
+            res.send([]);
+        } else {
+            res.send(rowsCustomers.rows);
+        }
     }catch(err){
         return res.status(500).send(err.message);
     }

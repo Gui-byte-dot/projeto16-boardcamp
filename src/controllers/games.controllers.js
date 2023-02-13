@@ -26,5 +26,3 @@ export async function findAll(req,res){
     }
 }
 
-// SELECT * FROM Customers
-// WHERE CustomerName LIKE 'a%';
