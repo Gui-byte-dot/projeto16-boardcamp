@@ -10,7 +10,7 @@ export async function validSchemaGames(req,res,next){
     }
     const gameExists = await connectionDB.query("SELECT * FROM games WHERE name=$1",[game.name]);
     if(gameExists.rowCount !== 0){
-        res.sendStatus(409);
+        return res.sendStatus(409);
     }
     res.locals.game = game;
     next();
