@@ -9,7 +9,7 @@ export async function create(req,res){
         res.sendStatus(201);
     }catch (err){
         console.log(err);
-        res.status(500).send(err.message);
+        res.status(400).send(err.message);
     }
 }
 export async function findAll(req,res){
